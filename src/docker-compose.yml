@@ -1,0 +1,24 @@
+﻿version: "3"
+
+services:
+  contactapi:
+    image: contactapi
+    build:
+      context: .
+    ports:
+      - "5000:80"
+    networks:
+      - contact-network
+    depends_on:
+      - "rediscontact"
+
+  rediscontact:
+    image: redis:alpine
+    ports:
+      - "16379:6379"
+    networks:
+      - contact-network
+
+networks: 
+    contact-network:
+        driver: bridge
