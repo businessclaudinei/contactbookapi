@@ -1,1 +1,1 @@
-web dotnet ContactBook.Api.dll
+web: dotnet ContactBook.Api.dll
