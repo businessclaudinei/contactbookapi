@@ -38,7 +38,10 @@ namespace ContactBook.Domain.Commands.RemoveContact {
             }
             contacts = contacts.Where (x => !x.Email.Equals (command.Email)).ToList ();
 
-            _responseCacheService.CacheResponseAsync (user.Email, contacts, new System.TimeSpan (0, 0, 600)).ConfigureAwait (false);
+            var expiration = Convert.ToInt32 (Environment.GetEnvironmentVariable ("DATA_EXPIRATION_SECONDS"));
+            expiration = expiration < 1 ? 900 : expiration;
+
+            _responseCacheService.CacheResponseAsync (user.Email, contacts, new System.TimeSpan (0, 0, expiration)).ConfigureAwait (false);
 
             return new RemoveContactCommandResponse () { Message = "Usuario removido com sucesso!", Success = true };
         }

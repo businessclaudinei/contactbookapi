@@ -47,7 +47,9 @@ namespace ContactBook.Domain.Commands.UpdateUser {
                 return new UpdateUserCommandResponse () { Message = "Email não cadastrado", Success = false };
             }
 
-            _responseCacheService.CacheResponseAsync ("users", users, new System.TimeSpan (0, 0, 36000)).ConfigureAwait (false);
+            var expiration = Convert.ToInt32 (Environment.GetEnvironmentVariable ("DATA_EXPIRATION_SECONDS"));
+            expiration = expiration < 1 ? 900 : expiration;
+            _responseCacheService.CacheResponseAsync ("users", users, new System.TimeSpan (0, 0, expiration)).ConfigureAwait (false);
 
             return new UpdateUserCommandResponse () { Message = "Senha alterada com sucesso!", Success = true };
         }
