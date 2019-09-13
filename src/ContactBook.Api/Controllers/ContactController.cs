@@ -64,9 +64,9 @@ namespace ContactBook.Api.Controllers {
             return await _mediator.Send (command);
         }
 
-        [HttpGet ("account/login")]
+        [HttpPost ("account/login")]
         [EnableCors ("AllowOrigin")]
-        public async Task<ActionResult<GetUserQueryResponse>> GetToken ([FromQuery] GetUserQuery query) {
+        public async Task<ActionResult<GetUserQueryResponse>> GetToken ([FromBody] GetUserQuery query) {
             return await _mediator.Send (query);
         }
     }
