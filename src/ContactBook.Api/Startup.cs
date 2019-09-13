@@ -78,6 +78,9 @@ namespace ContactBook.Api {
                 app.UseHsts ();
             }
             app.UseCors (options => options.AllowAnyOrigin ());
+            app.UseCors (option => option.AllowAnyMethod ());
+            app.UseCors (option => option.AllowAnyHeader ());
+
             app.UseDefaultFiles ();
             app.UseStaticFiles ();
 
