@@ -24,21 +24,24 @@ namespace ContactBook.Domain.UpdateContact {
                     user = JsonConvert.DeserializeObject<AddUserCommand> (data);
                 }
             } catch (Exception ex) {
-                return new UpdateContactCommandResponse () { };
+                return new UpdateContactCommandResponse () { Message = "Voce precisa logar!", Success = false };
             }
 
             var contacts = new List<UpdateContactCommand> ();
-            var cachedValue = await _responseCacheService.GetCachedResponseAsync (user.Email);
+            try {
+                var cachedValue = await _responseCacheService.GetCachedResponseAsync (user.Email);
 
-            if (cachedValue != null)
-                contacts = JsonConvert.DeserializeObject<List<UpdateContactCommand>> (cachedValue);
-
+                if (cachedValue != null)
+                    contacts = JsonConvert.DeserializeObject<List<UpdateContactCommand>> (cachedValue);
+            } catch (Exception ex) {
+                return new UpdateContactCommandResponse () { Message = "Erro ao atualizar o contato!", Success = false };
+            }
             contacts = contacts.Where (x => !x.Email.Equals (command.Email)).ToList ();
             contacts.Add (command);
 
             _responseCacheService.CacheResponseAsync (user.Email, contacts, new System.TimeSpan (0, 0, 600)).ConfigureAwait (false);
 
-            return new UpdateContactCommandResponse ();
+            return new UpdateContactCommandResponse () { Message = "Usuario atualizado com sucesso!", Success = true };
         }
     }
 }

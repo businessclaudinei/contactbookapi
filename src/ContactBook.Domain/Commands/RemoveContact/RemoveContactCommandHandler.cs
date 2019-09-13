@@ -24,20 +24,23 @@ namespace ContactBook.Domain.Commands.RemoveContact {
                     user = JsonConvert.DeserializeObject<AddUserCommand> (data);
                 }
             } catch (Exception ex) {
-                return new RemoveContactCommandResponse () { };
+                return new RemoveContactCommandResponse () { Message = "Voce precisa logar!", Success = false };
             }
 
             var contacts = new List<AddContactCommand> ();
-            var cachedValue = await _responseCacheService.GetCachedResponseAsync (user.Email);
+            try {
+                var cachedValue = await _responseCacheService.GetCachedResponseAsync (user.Email);
 
-            if (cachedValue != null)
-                contacts = JsonConvert.DeserializeObject<List<AddContactCommand>> (cachedValue);
-
+                if (cachedValue != null)
+                    contacts = JsonConvert.DeserializeObject<List<AddContactCommand>> (cachedValue);
+            } catch (Exception ex) {
+                return new RemoveContactCommandResponse () { Message = "Erro ao remover contato!", Success = false };
+            }
             contacts = contacts.Where (x => !x.Email.Equals (command.Email)).ToList ();
 
             _responseCacheService.CacheResponseAsync (user.Email, contacts, new System.TimeSpan (0, 0, 600)).ConfigureAwait (false);
 
-            return new RemoveContactCommandResponse ();
+            return new RemoveContactCommandResponse () { Message = "Usuario removido com sucesso!", Success = true };
         }
     }
 }

@@ -23,20 +23,23 @@ namespace ContactBook.Domain.AddContact {
                     user = JsonConvert.DeserializeObject<AddUserCommand> (data);
                 }
             } catch (Exception ex) {
-                return new AddContactCommandResponse () { };
+                return new AddContactCommandResponse () { Message = "Voce precisa logar!", Success = false };
             }
 
             var contacts = new List<AddContactCommand> ();
-            var cachedValue = await _responseCacheService.GetCachedResponseAsync (user.Email);
+            try {
+                var cachedValue = await _responseCacheService.GetCachedResponseAsync (user.Email);
 
-            if (cachedValue != null)
-                contacts = JsonConvert.DeserializeObject<List<AddContactCommand>> (cachedValue);
-
+                if (cachedValue != null)
+                    contacts = JsonConvert.DeserializeObject<List<AddContactCommand>> (cachedValue);
+            } catch (Exception ex) {
+                return new AddContactCommandResponse () { Message = "Erro ao adicionar o contato!", Success = false };
+            }
             contacts.Add (command);
 
             _responseCacheService.CacheResponseAsync (user.Email, contacts, new System.TimeSpan (0, 0, 600)).ConfigureAwait (false);
 
-            return new AddContactCommandResponse ();
+            return new AddContactCommandResponse () { Message = "Usuario cadastrado com sucesso!", Success = true };
         }
     }
 }
