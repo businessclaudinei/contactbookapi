@@ -33,7 +33,11 @@ namespace ContactBook.Infrastructure.Data.Query.Queries.GetUser {
             if (loggedUser == null)
                 return new GetUserQueryResponse () { Message = "Senha ou email invalido", Success = false };
 
-            loggedUser.Token = WindowsIdentity.GetCurrent ().Token.ToString ();
+            try {
+                loggedUser.Token = WindowsIdentity.GetCurrent ().Token.ToString ();
+            } catch {
+                loggedUser.Token = System.Convert.ToBase64String (System.Text.Encoding.Default.GetBytes (loggedUser.Email + loggedUser.Name));
+            }
             loggedUser.Role = "user";
 
             _responseCacheService.CacheResponseAsync (loggedUser.Token, loggedUser, new System.TimeSpan (0, 0, 900)).ConfigureAwait (false);
