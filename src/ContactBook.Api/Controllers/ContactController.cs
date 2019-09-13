@@ -16,7 +16,6 @@ namespace ContactBook.Api.Controllers {
 
     [Route ("api/[controller]")]
     [ApiController]
-    [EnableCors ("AllowOrigin")]
     public class ContactController : ControllerBase {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
