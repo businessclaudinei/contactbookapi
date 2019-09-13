@@ -30,12 +30,14 @@ namespace ContactBook.Api.Controllers {
 
         // GET api/values/5
         [HttpGet]
+        [EnableCors ("AllowOrigin")]
         public async Task<ActionResult<GetContactsQueryResponse>> Get (string token) {
             return await _mediator.Send (new GetContactsQuery { Token = token });
         }
 
         // POST api/values
         [HttpPost]
+        [EnableCors ("AllowOrigin")]
         public async Task<ActionResult<AddContactCommandResponse>> Post ([FromBody] AddContactCommand command, string token) {
             command.Token = token;
             return await _mediator.Send (command);
@@ -43,6 +45,7 @@ namespace ContactBook.Api.Controllers {
 
         // PUT api/values/5
         [HttpPut ("{email}")]
+        [EnableCors ("AllowOrigin")]
         public async Task<ActionResult<UpdateContactCommandResponse>> Put ([FromBody] UpdateContactCommand command, string token) {
             command.Token = token;
             return await _mediator.Send (command);
@@ -50,6 +53,7 @@ namespace ContactBook.Api.Controllers {
 
         // DELETE api/values/5
         [HttpDelete ("{email}")]
+        [EnableCors ("AllowOrigin")]
         public async Task<ActionResult<RemoveContactCommandResponse>> Delete (string email, string token) {
             return await _mediator.Send (new RemoveContactCommand { Token = token, Email = email });
         }
@@ -62,6 +66,7 @@ namespace ContactBook.Api.Controllers {
         }
 
         [HttpGet ("account/login")]
+        [EnableCors ("AllowOrigin")]
         public async Task<ActionResult<GetUserQueryResponse>> GetToken ([FromQuery] GetUserQuery query) {
             return await _mediator.Send (query);
         }
