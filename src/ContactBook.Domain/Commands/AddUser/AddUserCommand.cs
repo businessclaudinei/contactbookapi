@@ -1,7 +1,7 @@
 using MediatR;
 using Newtonsoft.Json;
 
-namespace ContactBook.Commands.AddUser {
+namespace ContactBook.Domain.Commands.AddUser {
     public sealed class AddUserCommand : IRequest<AddUserCommandResponse> {
 
         [JsonProperty ("id")]

@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ContactBook.Commands.AddContact;
-using ContactBook.Commands.AddUser;
 using ContactBook.Infrastructure.Data.Service.Resources.Cache;
 using MediatR;
 using Newtonsoft.Json;
 
-namespace ContactBook.Domain.AddUser {
+namespace ContactBook.Domain.Commands.AddUser {
     public class AddUserCommandHandler : IRequestHandler<AddUserCommand, AddUserCommandResponse> {
         private readonly IResponseCacheService _responseCacheService;
         public AddUserCommandHandler (IResponseCacheService responseCacheService) {
@@ -33,7 +31,9 @@ namespace ContactBook.Domain.AddUser {
             else
                 return new AddUserCommandResponse () { Message = "Usuario ja cadastrado com este email.", Success = false };
 
-            _responseCacheService.CacheResponseAsync ("users", users, new System.TimeSpan (0, 0, 36000)).ConfigureAwait (false);
+            var expiration = Convert.ToInt32 (Environment.GetEnvironmentVariable ("DATA_EXPIRATION_SECONDS"));
+            expiration = expiration < 1 ? 900 : expiration;
+            _responseCacheService.CacheResponseAsync ("users", users, new TimeSpan (0, 0, expiration)).ConfigureAwait (false);
 
             return new AddUserCommandResponse () { Message = "Usuario Cadastrado com sucesso!", Success = true };
         }

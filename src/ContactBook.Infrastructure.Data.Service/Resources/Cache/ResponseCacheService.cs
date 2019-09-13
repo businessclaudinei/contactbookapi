@@ -36,8 +36,11 @@ namespace ContactBook.Infrastructure.Data.Service.Resources.Cache {
                 serializedResponse = JsonConvert.SerializeObject (response);
             }
 
+            var expiration = Convert.ToInt32 (Environment.GetEnvironmentVariable ("TOKEN_EXPIRATION_SECONDS"));
+            expiration = expiration < 1 ? 900 : expiration;
+
             await _distributedCache.SetStringAsync (cacheKey, serializedResponse, new DistributedCacheEntryOptions {
-                AbsoluteExpirationRelativeToNow = new TimeSpan (0, 0, Convert.ToInt32 (Environment.GetEnvironmentVariable ("TOKEN_EXPIRATION_SECONDS")))
+                AbsoluteExpirationRelativeToNow = new TimeSpan (0, 0, expiration)
             });
             return await GetCachedResponseAsync (cacheKey);
         }

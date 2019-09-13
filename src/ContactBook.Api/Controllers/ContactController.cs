@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using ContactBook.Commands.AddContact;
-using ContactBook.Commands.AddUser;
 using ContactBook.Commands.UpdateContact;
+using ContactBook.Domain.Commands.AddUser;
 using ContactBook.Domain.Commands.RemoveContact;
+using ContactBook.Domain.Commands.UpdateUser;
 using ContactBook.Infrastructure.Data.Query.Queries.GetContacts;
 using ContactBook.Infrastructure.Data.Query.Queries.GetUser;
 using ContactBook.Infrastructure.Data.Service.Resources.Cache;
@@ -68,6 +68,13 @@ namespace ContactBook.Api.Controllers {
         [EnableCors ("AllowOrigin")]
         public async Task<ActionResult<GetUserQueryResponse>> GetToken ([FromBody] GetUserQuery query) {
             return await _mediator.Send (query);
+        }
+
+        [HttpPut ("account")]
+        [EnableCors ("AllowOrigin")]
+        public async Task<ActionResult<UpdateUserCommandResponse>> UpdatePassword ([FromBody] UpdateUserCommand command, string token) {
+            command.Token = token;
+            return await _mediator.Send (command);
         }
     }
 }

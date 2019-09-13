@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ContactBook.Commands.AddContact;
-using ContactBook.Commands.AddUser;
+using ContactBook.Domain.Commands.AddUser;
 using ContactBook.Infrastructure.Data.Service.Resources.Cache;
 using MediatR;
 using Newtonsoft.Json;

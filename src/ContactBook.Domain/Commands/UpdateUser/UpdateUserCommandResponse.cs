@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 
-namespace ContactBook.Domain.Commands.AddUser {
-    public sealed class AddUserCommandResponse {
+namespace ContactBook.Domain.Commands.UpdateUser {
+    public sealed class UpdateUserCommandResponse {
         [JsonProperty ("message")]
         public string Message { get; set; }
 
