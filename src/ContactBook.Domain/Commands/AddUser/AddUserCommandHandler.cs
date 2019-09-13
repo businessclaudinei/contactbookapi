@@ -27,6 +27,7 @@ namespace ContactBook.Domain.AddUser {
                 return new AddUserCommandResponse () { Message = "Erro ao cadastrar usuario", Success = false };
             }
 
+            command.Image = "https://picsum.photos/300/";
             if (!users.Any (x => x.Email.Equals (command.Email)))
                 users.Add (command);
             else
