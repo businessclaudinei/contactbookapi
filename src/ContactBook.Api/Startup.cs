@@ -77,7 +77,7 @@ namespace ContactBook.Api {
             } else {
                 app.UseHsts ();
             }
-
+            app.UseCors (options => options.AllowAnyOrigin ());
             app.UseDefaultFiles ();
             app.UseStaticFiles ();
 
