@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,8 +32,12 @@ namespace ContactBook.Api {
                     fvc.RegisterValidatorsFromAssemblyContaining<GetContactsQueryValidator> ())
                 .SetCompatibilityVersion (CompatibilityVersion.Version_2_1);
 
-            services.AddCors (c => {
-                c.AddPolicy ("AllowOrigin", options => options.AllowAnyOrigin ());
+            // services.AddCors (c => {
+            //     c.AddPolicy ("AllowOrigin", options => options.AllowAnyOrigin ());
+            // });
+
+            services.Configure<MvcOptions> (options => {
+                options.Filters.Add (new CorsAuthorizationFilterFactory ("AllowOrigin"));
             });
 
             // Register the Swagger generator, defining 1 or more Swagger documents
