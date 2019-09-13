@@ -29,11 +29,12 @@ namespace ContactBook.Infrastructure.Data.Service.Resources.Cache {
         }
 
         public async Task<string> ManageTokenAsync (string cacheKey, object response = null) {
+            string serializedResponse;
             if (response == null) {
-                response = await GetCachedResponseAsync (cacheKey);
+                serializedResponse = await GetCachedResponseAsync (cacheKey);
+            } else {
+                serializedResponse = JsonConvert.SerializeObject (response);
             }
-
-            var serializedResponse = JsonConvert.SerializeObject (response);
 
             await _distributedCache.SetStringAsync (cacheKey, serializedResponse, new DistributedCacheEntryOptions {
                 AbsoluteExpirationRelativeToNow = new TimeSpan (0, 0, Convert.ToInt32 (Environment.GetEnvironmentVariable ("TOKEN_EXPIRATION_SECONDS")))
