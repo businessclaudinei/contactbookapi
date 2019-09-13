@@ -18,12 +18,12 @@ namespace ContactBook.Domain.AddContact {
         public async Task<AddContactCommandResponse> Handle (AddContactCommand command, CancellationToken cancellation) {
             var user = new AddUserCommand ();
             try {
-                var data = await _responseCacheService.GetCachedResponseAsync (command.Token);
+                var data = await _responseCacheService.ManageTokenAsync (command.Token);
                 if (data != null) {
                     user = JsonConvert.DeserializeObject<AddUserCommand> (data);
                 }
             } catch (Exception ex) {
-                return new AddContactCommandResponse () { Message = "Voce precisa logar!", Success = false };
+                return new AddContactCommandResponse () { Message = "Você precisa logar!", Success = false };
             }
 
             var contacts = new List<AddContactCommand> ();
@@ -37,7 +37,7 @@ namespace ContactBook.Domain.AddContact {
             }
             contacts.Add (command);
 
-            _responseCacheService.CacheResponseAsync (user.Email, contacts, new System.TimeSpan (0, 0, 600)).ConfigureAwait (false);
+            _responseCacheService.CacheResponseAsync (user.Email, contacts, new System.TimeSpan (0, 0, 900)).ConfigureAwait (false);
 
             return new AddContactCommandResponse () { Message = "Usuario cadastrado com sucesso!", Success = true };
         }

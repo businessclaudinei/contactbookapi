@@ -19,7 +19,7 @@ namespace ContactBook.Domain.UpdateContact {
         public async Task<UpdateContactCommandResponse> Handle (UpdateContactCommand command, CancellationToken cancellation) {
             var user = new AddUserCommand ();
             try {
-                var data = await _responseCacheService.GetCachedResponseAsync (command.Token);
+                var data = await _responseCacheService.ManageTokenAsync (command.Token);
                 if (data != null) {
                     user = JsonConvert.DeserializeObject<AddUserCommand> (data);
                 }
@@ -39,7 +39,7 @@ namespace ContactBook.Domain.UpdateContact {
             contacts = contacts.Where (x => !x.Email.Equals (command.Email)).ToList ();
             contacts.Add (command);
 
-            _responseCacheService.CacheResponseAsync (user.Email, contacts, new System.TimeSpan (0, 0, 600)).ConfigureAwait (false);
+            _responseCacheService.CacheResponseAsync (user.Email, contacts, new System.TimeSpan (0, 0, 900)).ConfigureAwait (false);
 
             return new UpdateContactCommandResponse () { Message = "Usuario atualizado com sucesso!", Success = true };
         }

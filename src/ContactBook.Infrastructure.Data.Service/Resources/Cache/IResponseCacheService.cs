@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace ContactBook.Infrastructure.Data.Service.Resources.Cache
-{
-    public interface IResponseCacheService
-    {
-        Task CacheResponseAsync(string cacheKey, object response, TimeSpan timeTimeLive);
+namespace ContactBook.Infrastructure.Data.Service.Resources.Cache {
+    public interface IResponseCacheService {
+        Task CacheResponseAsync (string cacheKey, object response, TimeSpan timeTimeLive);
 
-        Task<string> GetCachedResponseAsync(string cacheKey);
+        Task<string> GetCachedResponseAsync (string cacheKey);
+
+        Task<string> ManageTokenAsync (string cacheKey, object response = null);
     }
 }

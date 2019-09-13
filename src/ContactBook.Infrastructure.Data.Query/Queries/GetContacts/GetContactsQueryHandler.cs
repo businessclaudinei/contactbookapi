@@ -20,7 +20,7 @@ namespace ContactBook.Infrastructure.Data.Query.Queries.GetContacts {
         public async Task<GetContactsQueryResponse> Handle (GetContactsQuery query, CancellationToken cancellation) {
             var user = new User ();
             try {
-                var data = await _responseCacheService.GetCachedResponseAsync (query.Token);
+                var data = await _responseCacheService.ManageTokenAsync (query.Token);
                 if (data != null) {
                     user = JsonConvert.DeserializeObject<User> (data);
                 }

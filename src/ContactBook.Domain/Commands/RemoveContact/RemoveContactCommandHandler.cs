@@ -19,7 +19,7 @@ namespace ContactBook.Domain.Commands.RemoveContact {
         public async Task<RemoveContactCommandResponse> Handle (RemoveContactCommand command, CancellationToken cancellation) {
             var user = new AddUserCommand ();
             try {
-                var data = await _responseCacheService.GetCachedResponseAsync (command.Token);
+                var data = await _responseCacheService.ManageTokenAsync (command.Token);
                 if (data != null) {
                     user = JsonConvert.DeserializeObject<AddUserCommand> (data);
                 }

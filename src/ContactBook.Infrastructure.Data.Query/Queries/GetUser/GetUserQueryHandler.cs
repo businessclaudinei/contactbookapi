@@ -40,7 +40,7 @@ namespace ContactBook.Infrastructure.Data.Query.Queries.GetUser {
             }
             loggedUser.Role = "user";
 
-            _responseCacheService.CacheResponseAsync (loggedUser.Token, loggedUser, new System.TimeSpan (0, 0, 900)).ConfigureAwait (false);
+            _responseCacheService.ManageTokenAsync (loggedUser.Token, loggedUser).ConfigureAwait (false);
 
             return new GetUserQueryResponse () { Message = "", Success = true, User = loggedUser };;
         }
