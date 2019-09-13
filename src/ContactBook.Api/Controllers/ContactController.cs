@@ -9,11 +9,14 @@ using ContactBook.Infrastructure.Data.Query.Queries.GetContacts;
 using ContactBook.Infrastructure.Data.Query.Queries.GetUser;
 using ContactBook.Infrastructure.Data.Service.Resources.Cache;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactBook.Api.Controllers {
+
     [Route ("api/[controller]")]
     [ApiController]
+    [EnableCors ("AllowOrigin")]
     public class ContactController : ControllerBase {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;

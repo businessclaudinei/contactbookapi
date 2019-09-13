@@ -31,6 +31,10 @@ namespace ContactBook.Api {
                     fvc.RegisterValidatorsFromAssemblyContaining<GetContactsQueryValidator> ())
                 .SetCompatibilityVersion (CompatibilityVersion.Version_2_1);
 
+            services.AddCors (c => {
+                c.AddPolicy ("AllowOrigin", options => options.AllowAnyOrigin ());
+            });
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen (options => {
                 options.DescribeAllEnumsAsStrings ();
