@@ -36,6 +36,15 @@ namespace ContactBook.Api {
             //     c.AddPolicy ("AllowOrigin", options => options.AllowAnyOrigin ());
             // });
 
+            services.AddCors (options => {
+                options.AddPolicy ("AllowOrigin",
+                    builder => {
+                        builder.AllowAnyOrigin ()
+                            .AllowAnyHeader ()
+                            .AllowAnyMethod ();
+                    });
+            });
+
             services.Configure<MvcOptions> (options => {
                 options.Filters.Add (new CorsAuthorizationFilterFactory ("AllowOrigin"));
             });
@@ -82,10 +91,7 @@ namespace ContactBook.Api {
             } else {
                 app.UseHsts ();
             }
-            app.UseCors (options => options.AllowAnyOrigin ());
-            app.UseCors (option => option.AllowAnyMethod ());
-            app.UseCors (option => option.AllowAnyHeader ());
-
+            app.UseCors ();
             app.UseDefaultFiles ();
             app.UseStaticFiles ();
 

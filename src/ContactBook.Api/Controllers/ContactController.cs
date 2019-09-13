@@ -56,6 +56,7 @@ namespace ContactBook.Api.Controllers {
 
         // POST api/values
         [HttpPost ("account")]
+        [EnableCors ("AllowOrigin")]
         public async Task<ActionResult<AddUserCommandResponse>> CreateUser ([FromBody] AddUserCommand command) {
             return await _mediator.Send (command);
         }
